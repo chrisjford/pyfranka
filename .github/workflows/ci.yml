@@ -32,6 +32,8 @@ jobs:
         git checkout ${{ matrix.libfranka-version }}
         # Add missing include for <string>
         sed -i '7i#include <string>' include/franka/control_tools.h
+        # Add missing include for <stdexcept>
+        sed -i '7i#include <stdexcept>' src/control_types.cpp
         mkdir build
         cd build
         cmake ..
