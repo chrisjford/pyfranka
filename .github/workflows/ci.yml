@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        libfranka-version: ['0.8.0', '0.9.0']
+        libfranka-version: ['0.8.0']
 
     steps:
     - name: Checkout repository
@@ -42,6 +42,9 @@ jobs:
         sed -i '2i#include <string>' src/control_tools.cpp
         # Modify control_types.cpp to include necessary headers
         sed -i '2i#include <stdexcept>' src/control_types.cpp
+        # Ensure proper includes in robot_impl.h and robot.cpp
+        sed -i '2i#include <research_interface/robot/service_types.h>' src/robot_impl.h
+        sed -i '3i#include <research_interface/robot/service_types.h>' src/robot.cpp
         mkdir build
         cd build
         cmake ..
