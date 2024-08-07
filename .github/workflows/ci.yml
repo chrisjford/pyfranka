@@ -41,13 +41,13 @@ jobs:
         sed -i '1i#include <array>' src/robot.cpp
         sed -i '2i#include <research_interface/robot/service_types.h>' src/robot_impl.h
         sed -i '2i#include <research_interface/robot/service_types.h>' src/robot.cpp
-        # Remove duplicate struct definitions if present
+        # Ensure struct definitions are consistent and remove duplicates
         sed -i '/struct GetCartesianLimit {/d' src/robot_impl.h
         sed -i '/struct SetFilters {/d' src/robot_impl.h
         sed -i '/struct GetCartesianLimit {/d' src/robot.cpp
         sed -i '/struct SetFilters {/d' src/robot.cpp
-        # Add correct struct definitions in one place
-        echo 'struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; }; struct SetFilters { struct Request {}; struct Response {}; };' >> src/robot_impl.h
+        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' >> src/robot_impl.h
+        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' >> src/robot.cpp
         mkdir build
         cd build
         cmake ..
