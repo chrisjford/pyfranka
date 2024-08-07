@@ -30,21 +30,21 @@ jobs:
         git clone --recurse-submodules https://github.com/frankaemika/libfranka.git
         cd libfranka
         git checkout ${{ matrix.libfranka-version }}
-        # Modify headers to include necessary includes and define missing members
-        sed -i '1i#include <stdexcept>' ../include/robot.h
-        sed -i '2i#include <string>' ../include/robot.h
-        sed -i '3i#include <research_interface/robot/service_types.h>' ../include/robot.h
-        sed -i '4i struct VirtualWallCuboid { /* add members */ };' ../include/robot.h
-        sed -i '5i uint32_t executeCommand(int32_t id, franka::VirtualWallCuboid* virtual_wall);' ../include/robot.h
-        sed -i '6i void setFilters(double joint_position_filter_frequency, double joint_velocity_filter_frequency, double cartesian_position_filter_frequency, double cartesian_velocity_filter_frequency, double controller_filter_frequency);' ../include/robot.h
-        sed -i '7i#include <string>' include/franka/control_tools.h
-        sed -i '2i#include <string>' src/control_tools.cpp
-        sed -i '2i#include <stdexcept>' src/control_types.cpp
+        # Add necessary includes and definitions
+        sed -i '1i#include <stdexcept>' src/control_types.cpp
+        sed -i '1i#include <stdexcept>' include/franka/control_types.h
+        sed -i '1i#include <string>' include/franka/control_tools.h
+        sed -i '1i#include <string>' src/control_tools.cpp
+        sed -i '1i#include <array>' include/franka/gripper.h
         # Ensure proper includes and definitions in robot_impl.h and robot.cpp
+        sed -i '1i#include <array>' src/robot_impl.h
+        sed -i '1i#include <array>' src/robot.cpp
         sed -i '2i#include <research_interface/robot/service_types.h>' src/robot_impl.h
-        sed -i '3i#include <research_interface/robot/service_types.h>' src/robot.cpp
-        sed -i '4i namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { int object_frame; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' src/robot_impl.h
-        sed -i '5i namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { int object_frame; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' src/robot.cpp
+        sed -i '2i#include <research_interface/robot/service_types.h>' src/robot.cpp
+        sed -i '3i struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; };' src/robot_impl.h
+        sed -i '4i struct SetFilters { struct Request {}; struct Response {}; };' src/robot_impl.h
+        sed -i '3i struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; };' src/robot.cpp
+        sed -i '4i struct SetFilters { struct Request {}; struct Response {}; };' src/robot.cpp
         mkdir build
         cd build
         cmake ..
