@@ -31,12 +31,15 @@ jobs:
         cd libfranka
         git checkout ${{ matrix.libfranka-version }}
         # Modify robot.h to include necessary headers and define missing members
-        echo '#include <stdexcept>' >> ../include/robot.h
-        echo '#include <string>' >> ../include/robot.h
-        echo '#include <research_interface/robot/service_types.h>' >> ../include/robot.h
-        echo 'struct VirtualWallCuboid { /* add members */ };' >> ../include/robot.h
-        echo 'uint32_t executeCommand(int32_t id, franka::VirtualWallCuboid* virtual_wall);' >> ../include/robot.h
-        echo 'void setFilters(double joint_position_filter_frequency, double joint_velocity_filter_frequency, double cartesian_position_filter_frequency, double cartesian_velocity_filter_frequency, double controller_filter_frequency);' >> ../include/robot.h
+        sed -i '1i#include <stdexcept>' ../include/robot.h
+        sed -i '2i#include <string>' ../include/robot.h
+        sed -i '3i#include <research_interface/robot/service_types.h>' ../include/robot.h
+        sed -i '4i struct VirtualWallCuboid { /* add members */ };' ../include/robot.h
+        sed -i '5i uint32_t executeCommand(int32_t id, franka::VirtualWallCuboid* virtual_wall);' ../include/robot.h
+        sed -i '6i void setFilters(double joint_position_filter_frequency, double joint_velocity_filter_frequency, double cartesian_position_filter_frequency, double cartesian_velocity_filter_frequency, double controller_filter_frequency);' ../include/robot.h
+        # Modify control_tools.h and control_tools.cpp to include necessary headers
+        sed -i '7i#include <string>' include/franka/control_tools.h
+        sed -i '2i#include <string>' src/control_tools.cpp
         mkdir build
         cd build
         cmake ..
