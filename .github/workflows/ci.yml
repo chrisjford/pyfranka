@@ -27,7 +27,7 @@ jobs:
 
     - name: Install specific libfranka version
       run: |
-        git clone https://github.com/frankaemika/libfranka.git
+        git clone --recurse-submodules https://github.com/frankaemika/libfranka.git
         cd libfranka
         git checkout ${{ matrix.libfranka-version }}
         mkdir build
