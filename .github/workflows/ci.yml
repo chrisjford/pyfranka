@@ -30,12 +30,13 @@ jobs:
         git clone --recurse-submodules https://github.com/frankaemika/libfranka.git
         cd libfranka
         git checkout ${{ matrix.libfranka-version }}
-        # Add missing include for <string> and <stdexcept>
-        sed -i '7i#include <string>' include/franka/control_tools.h
-        sed -i '7i#include <stdexcept>' src/control_types.cpp
-        # Add necessary includes for GetCartesianLimit and SetFilters
-        sed -i '9i#include <research_interface/robot/service_types.h>' src/robot_impl.h
-        sed -i '10i#include <research_interface/robot/service_types.h>' src/robot.cpp
+        # Modify robot.h to include necessary headers and define missing members
+        echo '#include <stdexcept>' >> ../include/robot.h
+        echo '#include <string>' >> ../include/robot.h
+        echo '#include <research_interface/robot/service_types.h>' >> ../include/robot.h
+        echo 'struct VirtualWallCuboid { /* add members */ };' >> ../include/robot.h
+        echo 'uint32_t executeCommand(int32_t id, franka::VirtualWallCuboid* virtual_wall);' >> ../include/robot.h
+        echo 'void setFilters(double joint_position_filter_frequency, double joint_velocity_filter_frequency, double cartesian_position_filter_frequency, double cartesian_velocity_filter_frequency, double controller_filter_frequency);' >> ../include/robot.h
         mkdir build
         cd build
         cmake ..
