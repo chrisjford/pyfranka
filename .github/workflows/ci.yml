@@ -45,6 +45,8 @@ jobs:
         # Ensure proper includes in robot_impl.h and robot.cpp
         sed -i '2i#include <research_interface/robot/service_types.h>' src/robot_impl.h
         sed -i '3i#include <research_interface/robot/service_types.h>' src/robot.cpp
+        sed -i '4i namespace research_interface { namespace robot { struct GetCartesianLimit {}; struct SetFilters {}; } }' src/robot_impl.h
+        sed -i '5i namespace research_interface { namespace robot { struct GetCartesianLimit {}; struct SetFilters {}; } }' src/robot.cpp
         mkdir build
         cd build
         cmake ..
