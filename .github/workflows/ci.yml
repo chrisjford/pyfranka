@@ -46,8 +46,8 @@ jobs:
         sed -i '/struct SetFilters {/d' src/robot_impl.h
         sed -i '/struct GetCartesianLimit {/d' src/robot.cpp
         sed -i '/struct SetFilters {/d' src/robot.cpp
-        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' >> src/robot_impl.h
-        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; }; struct SetFilters { struct Request {}; struct Response {}; }; } }' >> src/robot.cpp
+        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; static constexpr auto kCommand = 0; using Message = GetCartesianLimit; using Header = Request; }; struct SetFilters { struct Request {}; struct Response {}; static constexpr auto kCommand = 0; using Message = SetFilters; using Header = Request; }; } }' >> src/robot_impl.h
+        echo 'namespace research_interface { namespace robot { struct GetCartesianLimit { struct Request {}; struct Response { std::array<double, 16> object_frame; double object_world_size; bool object_activation; }; static constexpr auto kCommand = 0; using Message = GetCartesianLimit; using Header = Request; }; struct SetFilters { struct Request {}; struct Response {}; static constexpr auto kCommand = 0; using Message = SetFilters; using Header = Request; }; } }' >> src/robot.cpp
         mkdir build
         cd build
         cmake ..
