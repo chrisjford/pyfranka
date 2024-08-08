@@ -71,7 +71,13 @@ jobs:
     - name: Add pytest configuration
       run: |
         echo "[pytest]" > pytest.ini
+        echo "testpaths = tests" >> pytest.ini
         echo "norecursedirs = pybind11/tests" >> pytest.ini
+
+    - name: Add a sample test file
+      run: |
+        mkdir -p tests
+        echo "import pytest\nfrom pyfranka import Gripper\n\ndef test_gripper_initialization():\n    try:\n        gripper = Gripper()\n        assert gripper is not None\n    except Exception as e:\n        pytest.fail(f\"Gripper initialization failed: {e}\")\n\ndef test_gripper_open():\n    gripper = Gripper()\n    result = gripper.open()\n    assert result is True" > tests/test_compatibility.py
 
     - name: Run tests
       run: pytest
