@@ -8,9 +8,6 @@
 #include <franka/duration.h>
 #include <franka/exception.h>
 #include <franka/model.h>
-#include <franka/robot.h>
-#include <franka/robot_impl.h>
-#include <research_interface/robot.h>
 
 using research_interface::robot::GetCartesianLimit;
 using research_interface::robot::SetFilters;
@@ -622,15 +619,6 @@ namespace franka_control {
 		bgThreadRunning_ = false;
 		bgThread_.join();
 		bgThreadFunc_ = nullptr;
-	}
-
-	void Robot::getVirtualWall(int32_t id) {
-		VirtualWallCuboid virtual_wall;
-		impl_->executeCommand<GetCartesianLimit>(id, &virtual_wall);
-	}
-
-	void Robot::setFilters(double filter_1, double filter_2, double filter_3, double filter_4, double filter_5) {
-		impl_->executeCommand<SetFilters>(filter_1, filter_2, filter_3, filter_4, filter_5);
 	}
 
 }	// namespace franka_control
