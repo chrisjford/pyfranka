@@ -36,18 +36,18 @@ jobs:
         git submodule update
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_TESTS=OFF ..
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ..
         cmake --build .
 
     - name: Set Environment Variables
       run: |
-        echo "CMAKE_PREFIX_PATH=/usr/local" >> $GITHUB_ENV
-        echo "Franka_DIR=/usr/local/lib/cmake/Franka" >> $GITHUB_ENV
+        echo "CMAKE_PREFIX_PATH=/home/runner/work" >> $GITHUB_ENV
+        echo "Franka_DIR=/home/runner/work/libfranka/cmake" >> $GITHUB_ENV
 
     - name: Install pyfranka
       run: |
-        export CMAKE_PREFIX_PATH=/usr/local
-        export Franka_DIR=/usr/local/lib/cmake/Franka
+        export CMAKE_PREFIX_PATH=/home/runner/work
+        export Franka_DIR=/home/runner/work/libfranka/cmake
         pip install -e .
 
     - name: Debugging information
