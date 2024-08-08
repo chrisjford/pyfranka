@@ -39,14 +39,16 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_TESTS=OFF ..
         cmake --build .
 
-    - name: Set CMAKE_PREFIX_PATH
-      run: echo "CMAKE_PREFIX_PATH=/usr/local" >> $GITHUB_ENV
-
-    - name: Set Franka_DIR
-      run: echo "Franka_DIR=/usr/local/lib/cmake/Franka" >> $GITHUB_ENV
+    - name: Set Environment Variables
+      run: |
+        echo "CMAKE_PREFIX_PATH=/usr/local" >> $GITHUB_ENV
+        echo "Franka_DIR=/usr/local/lib/cmake/Franka" >> $GITHUB_ENV
 
     - name: Install pyfranka
-      run: pip install -e .
+      run: |
+        export CMAKE_PREFIX_PATH=/usr/local
+        export Franka_DIR=/usr/local/lib/cmake/Franka
+        pip install -e .
 
     - name: Debugging information
       run: |
