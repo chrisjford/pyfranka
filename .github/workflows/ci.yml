@@ -27,6 +27,8 @@ jobs:
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 10
         python -m pip install --upgrade pip
         python -m pip install pytest
+        python -m pip install pybind11
+        python -m pip install eigen
 
     - name: Install specific libfranka version
       run: |
