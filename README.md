@@ -11,7 +11,8 @@ This fork deals specifically with installing pyfranka to be compatible with libf
 
 To install the library on Linux, first build and install the [libfranka](https://github.com/frankaemika/libfranka):
 
-`sudo apt remove "*libfranka*"
+```
+sudo apt remove "*libfranka*"
 sudo apt update
 sudo apt install -y build-essential cmake git python3 python3-pip python3-venv libeigen3-dev
 git clone --branch 0.9.0 https://github.com/frankaemika/libfranka.git
@@ -21,7 +22,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 sudo cmake --install .
-`
+```
 A continous integration workflow is included in this repo at .github/workflows/ci.yml, which contains a working version of system dependencies (gcc/g++ versions etc).
 
 Next, build and install the [Eigen](https://eigen.tuxfamily.org), and [pybind11](https://github.com/pybind/pybind11) libraries.  Then clone the Pyfranka repository, move to the installation root directory, activate the python environment (e.g., [Conda](https://docs.conda.io/en/latest/)) you wish to install the library in, and run the following command:
