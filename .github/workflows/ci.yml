@@ -26,9 +26,7 @@ jobs:
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 10
         python -m pip install --upgrade pip
-        python -m pip install pytest
-        python -m pip install pybind11
-        python -m pip install eigen
+        python -m pip install pytest pybind11
 
     - name: Install specific libfranka version
       run: |
@@ -42,15 +40,27 @@ jobs:
         cmake --build .
         sudo cmake --install .
 
+    - name: Install pybind11
+      run: |
+        git clone https://github.com/pybind/pybind11.git
+        cd pybind11
+        mkdir build
+        cd build
+        cmake .. -DPYBIND11_TEST=OFF
+        make
+        sudo make install
+
     - name: Set Environment Variables
       run: |
-        echo "CMAKE_PREFIX_PATH=/usr/local" >> $GITHUB_ENV
+        echo "CMAKE_PREFIX_PATH=/usr/local:/usr/local/share/cmake/pybind11" >> $GITHUB_ENV
         echo "Franka_DIR=/usr/local/lib/cmake/Franka" >> $GITHUB_ENV
+        echo "pybind11_DIR=/usr/local/share/cmake/pybind11" >> $GITHUB_ENV
 
     - name: Install pyfranka
       run: |
-        export CMAKE_PREFIX_PATH=/usr/local
+        export CMAKE_PREFIX_PATH=/usr/local:/usr/local/share/cmake/pybind11
         export Franka_DIR=/usr/local/lib/cmake/Franka
+        export pybind11_DIR=/usr/local/share/cmake/pybind11
         pip install -e .
 
     - name: Debugging information
