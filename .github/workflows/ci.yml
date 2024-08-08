@@ -38,8 +38,6 @@ jobs:
         cd build
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_TESTS=OFF ..
         cmake --build .
-        sudo cmake --install .
-        sudo cp -r cmake/FrankaConfig.cmake /usr/local/lib/cmake/Franka/
 
     - name: Set Environment Variables
       run: |
