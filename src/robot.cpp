@@ -9,9 +9,6 @@
 #include <franka/exception.h>
 #include <franka/model.h>
 
-using research_interface::robot::GetCartesianLimit;
-using research_interface::robot::SetFilters;
-
 #include "robot.h"
 #include "utils.h"
 #include "lssab_trajectory.h"
