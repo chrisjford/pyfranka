@@ -5,9 +5,26 @@ The library supports basic joint/Cartesian position control and velocity control
 
 Pyfranka depends on [libfranka](https://github.com/frankaemika/libfranka) to interface with the robot, [Eigen](https://eigen.tuxfamily.org) for linear algebra operations and transformations, and [pybind11](https://github.com/pybind/pybind11) for the Python bindings.
 
+This fork deals specifically with installing pyfranka to be compatible with libfranka v0.9.0, which is required if using a Franka Emika Panda robot with controller firmware version 5.
+
 ## Installation
 
-To install the library on Linux, first build and install the [libfranka](https://github.com/frankaemika/libfranka), [Eigen](https://eigen.tuxfamily.org), and [pybind11](https://github.com/pybind/pybind11) libraries.  Then clone the Pyfranka repository, move to the installation root directory, activate the python environment (e.g., [Conda](https://docs.conda.io/en/latest/)) you wish to install the library in, and run the following command:
+To install the library on Linux, first build and install the [libfranka](https://github.com/frankaemika/libfranka):
+
+`sudo apt remove "*libfranka*"
+sudo apt update
+sudo apt install -y build-essential cmake git python3 python3-pip python3-venv libeigen3-dev
+git clone --branch 0.9.0 https://github.com/frankaemika/libfranka.git
+cd libfranka
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+sudo cmake --install .
+`
+A continous integration workflow is included in this repo at .github/workflows/ci.yml, which contains a working version of system dependencies (gcc/g++ versions etc).
+
+Next, build and install the [Eigen](https://eigen.tuxfamily.org), and [pybind11](https://github.com/pybind/pybind11) libraries.  Then clone the Pyfranka repository, move to the installation root directory, activate the python environment (e.g., [Conda](https://docs.conda.io/en/latest/)) you wish to install the library in, and run the following command:
 
 ```sh
 pip install -e .
