@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake libeigen3-dev libpoco-dev g++-7 gcc-7
+        sudo apt-get install -y build-essential cmake libeigen3-dev libpoco-dev g++-7 gcc-7
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 10
         python -m pip install --upgrade pip
@@ -30,16 +30,14 @@ jobs:
 
     - name: Install specific libfranka version
       run: |
-        git clone --recurse-submodules https://github.com/frankaemika/libfranka.git
+        git clone --recursive https://github.com/frankaemika/libfranka
         cd libfranka
         git checkout ${{ matrix.libfranka-version }}
+        git submodule update
         mkdir build
         cd build
-        cmake ..
-        make
-        sudo make install
-        cd ../..
-        sudo rm -rf libfranka
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ..
+        cmake --build .
 
     - name: Set CMAKE_PREFIX_PATH
       run: echo "CMAKE_PREFIX_PATH=/usr/local" >> $GITHUB_ENV
