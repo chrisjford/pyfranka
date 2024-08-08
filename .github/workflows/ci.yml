@@ -68,5 +68,10 @@ jobs:
         echo "Installed packages:"
         dpkg -l
 
+    - name: Add pytest configuration
+      run: |
+        echo "[pytest]" > pytest.ini
+        echo "norecursedirs = pybind11/tests" >> pytest.ini
+
     - name: Run tests
       run: pytest
